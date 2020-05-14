@@ -6,6 +6,9 @@ import MainImage from '../LandingPage/Sections/MainImage';
 import { Descriptions, Button, Row } from 'antd';
 import GridCard from '../LandingPage/Sections/GridCard';
 import Favorite from  './Sections/Favorite';
+import Comments from './Sections/Comments'
+import LikeDislikes from './Sections/LikeDislikes';
+import axios from 'axios';
 
 
 function MovieDetailPage(props) {
@@ -14,7 +17,11 @@ function MovieDetailPage(props) {
 
     const [Movie, setMovie] = useState([])
     const [Crews, setCrews] = useState([])
+    const [CommentLists, setCommentLists] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
+    const movieVariable = {
+        movieId: movieId
+    }
 
 
     useEffect(() => {
@@ -31,10 +38,25 @@ function MovieDetailPage(props) {
                     })
             })
 
+            axios.post('/api/comment/getComments', movieVariable)
+            .then(response => {
+                console.log(response)
+                if (response.data.success) {
+                    console.log('response.data.comments', response.data.comments)
+                    setCommentLists(response.data.comments)
+                } else {
+                    alert('Failed to get comments Info')
+                }
+            })
+
     }, [])
 
     const handleClick = ( ) => {
         setActorToggle(!ActorToggle)
+    }
+
+    const updateComment = (newComment) => {
+        setCommentLists(CommentLists.concat(newComment))
     }
     return(
         <div>
@@ -52,13 +74,13 @@ function MovieDetailPage(props) {
                 </div>
                 <Descriptions title="Movie Info" bordered>
                     <Descriptions.Item label="Title">{Movie.original_title}</Descriptions.Item>
-                    <Descriptions.Item labe="release_date">{Movie.release_date}</Descriptions.Item>
-                    <Descriptions.Item labe="revenue">{Movie.revenue}</Descriptions.Item>
-                    <Descriptions.Item labe="runtime">{Movie.runtime}</Descriptions.Item>
-                    <Descriptions.Item labe="vote_average" span={2}>{Movie.vote_average}</Descriptions.Item>
-                    <Descriptions.Item labe="vote_count">{Movie.vote_count}</Descriptions.Item>
-                    <Descriptions.Item labe="status">{Movie.status}</Descriptions.Item>
-                    <Descriptions.Item labe="popularity">{Movie.popularity}</Descriptions.Item>
+                    <Descriptions.Item label="ReleaseDate">{Movie.release_date}</Descriptions.Item>
+                    <Descriptions.Item label="revenue">{Movie.revenue}</Descriptions.Item>
+                    <Descriptions.Item label="runtime">{Movie.runtime}</Descriptions.Item>
+                    <Descriptions.Item label="Vote" span={2}>{Movie.vote_average}</Descriptions.Item>
+                    <Descriptions.Item label="VoteCount">{Movie.vote_count}</Descriptions.Item>
+                    <Descriptions.Item label="status">{Movie.status}</Descriptions.Item>
+                    <Descriptions.Item label="popularity">{Movie.popularity}</Descriptions.Item>
                 </Descriptions>
 
                 <div style ={{display: 'flex', justifyContent: 'center'}}>
@@ -84,6 +106,15 @@ function MovieDetailPage(props) {
                 </Row>
                 
                 }
+                <br />
+
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <LikeDislikes video videoId={movieId} userId={localStorage.getItem('userId')} />
+                </div>
+
+                {/* Comments */}
+                <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} postId={movieId} refreshFunction={updateComment} />
 
                 
             </div>

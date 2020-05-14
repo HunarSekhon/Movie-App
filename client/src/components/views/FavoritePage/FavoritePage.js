@@ -50,18 +50,18 @@ function FavoritePage(props) {
         const renderTableBody = FavoritedMovies.map((movie, index) => {
             const content =(
                 <div>
-                    {movie.movieImage ? 
-                    <imng src={`${IMAGE_URL}w500${movie.movieImage}`}/> : "no image"}
+                    {movie.moviePost ? 
+                    <imng src={`${IMAGE_URL}w500${movie.moviePost}`}/> : "no image"}
                 </div>
 
-        )
+            )
         return( 
             
             <tr>
             <Popover content={content} title={movie.movieTitle}>
-                <td>{movie.movieTitle}</td>            
+                <td>{movie.movieTitle}</td>              
             </Popover>
-                <td>{movie.movieRunTime}</td>
+                <td>{movie.runtime}</td>
                 <td><button onClick={()=>onClickRemove(movie.movieId)}> Remove </button></td>
             
             </tr>

@@ -23,7 +23,7 @@ function Favorite(props) {
                 if(response.data.success) {
                     setFavoriteNumber(response.data.favoriteNumber)
                 }else{
-                    alert('Failed to gey favorite number')
+                    alert('Failed to get favorite number')
                 }
             })
 
@@ -32,7 +32,7 @@ function Favorite(props) {
                 if(response.data.success) {
                     setFavorited(response.data.favorited)
                 }else{
-                    alert('Failed to gey favorite info')
+                    alert('Failed to get favorite info')
                 }
             })
 
@@ -71,7 +71,7 @@ function Favorite(props) {
         return(
 
             <div>
-                <button onClick={onClickFavorite}>{Favorited ? "remove from favorite" : "Add to favorite"} {FavoriteNumber}</button>
+                <button onClick={onClickFavorite}>{Favorited ? "remove from Watchlist" : "Add to Watchlist"}</button>
 
             </div>
         )
